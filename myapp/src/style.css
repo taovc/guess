@@ -87,13 +87,6 @@ button:focus {
   backdrop-filter: blur(15px) !important;
 }
 
-.navbar {
-  position: fixed !important;
-  transition: all 0.3s ease-out 0s !important;
-  padding: 0.3rem 2rem !important;
-  font-size: 1.2rem !important;
-}
-
 .navbar-toggler {
   position: relative !important;
   background-color: transparent !important;
@@ -149,7 +142,7 @@ button:focus {
   .navbar {
     padding: 1rem 2rem !important;
     font-size: 1.4rem !important;
-    background-color: #181a27 !important;
+    background-color: #ffffff !important;
   }
   .navbar-nav .nav-item a::after {
     display: none !important;
@@ -165,7 +158,7 @@ button:focus {
 }
 
 .navbar-nav .nav-link {
-  color: white !important;
+  color: rgb(255, 255, 255) !important;
   padding-right: 1rem !important;
   padding-left: 1rem !important;
 }
@@ -262,12 +255,19 @@ button:focus {
 .home-section {
   position: relative;
   z-index: -1;
-  background-image: var(--image-gradient), url(./Assets/bg.png);
-  background-position: top center;
-  background-size:cover;
+  background-image: var(--image-gradient), url(./Assets/home.jpeg);
+  background-attachment: fixed;
+  background-position: fixed;
   background-repeat: no-repeat;
-  padding-bottom: 30px !important;
-  padding-top: 30px !important;
+  background-size: cover;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  text-align: center;
+  filter: brightness(2.8);
 }
 
 .home-content {
