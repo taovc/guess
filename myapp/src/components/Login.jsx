@@ -1,43 +1,38 @@
 
-const Login = () => {
-    const [user, setUser] = useState({
-      email: "",
-      password: "",
-    });
-    const [error, setError] = useState("");
-    const navigate = useNavigate();
-  
-    const loginHandler = async (e) => {
-      e.preventDefault();
-  
-      const config = {
-        header: {
-          "Content-Type": "application/json",
-        },
-      };
-  
-      try {
-        const { data } = await axios.post(
-          `${global.API_ENDPOINT}/api/auth/login`,
-          user,
-          config
-        );
-        localStorage.setItem("authToken", data.token);
-        navigate("/");
-      } catch (error) {
-        setError(error?.response?.data?.error);
-        setTimeout(() => {
-          setError("");
-        }, 3 * 1000);
-      }
-    };
-  
-    const handleChange = (e) => {
-      setUser({ ...user, [e.target.name]: e.target.value });
-    };
-    return (
-      <div></div>
-    );
-  };
+import React from "react"
 
-export default Login;
+export default function Login (props) {
+  return (
+    <div className="Auth-form-container">
+      <form className="Auth-form">
+        <div className="Auth-form-content">
+          <h3 className="Auth-form-title">Sign In</h3>
+          <div className="form-group mt-3">
+            <label>Email address</label>
+            <input
+              type="email"
+              className="form-control mt-1"
+              placeholder="Enter email"
+            />
+          </div>
+          <div className="form-group mt-3">
+            <label>Password</label>
+            <input
+              type="password"
+              className="form-control mt-1"
+              placeholder="Enter password"
+            />
+          </div>
+          <div className="d-grid gap-2 mt-3">
+            <button type="submit" className="btn btn-primary">
+              Submit
+            </button>
+          </div>
+          <p className="forgot-password text-right mt-2">
+            Forgot <a href="#">password?</a>
+          </p>
+        </div>
+      </form>
+    </div>
+  )
+}

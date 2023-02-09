@@ -9,6 +9,8 @@ import {
 } from "react-router-dom";
 
 import Home from "./components/Home";
+import Login from "./components/Login";
+
 import ScrollToTop from "./components/ScrollToTop";
 import "./style.css";
 import "./App.css";
@@ -35,6 +37,7 @@ function App() {
         <ScrollToTop />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/login" element={<Login />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
       </div>
