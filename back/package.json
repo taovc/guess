@@ -1,13 +1,19 @@
 {
   "dependencies": {
+    "bcrypt": "^5.1.0",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "express": "^4.18.2",
+    "http": "^0.0.1-security",
+    "mongoose": "^6.9.1",
+    "nodemon": "^2.0.20",
     "ws": "^8.12.0"
   },
   "name": "back_service",
   "version": "1.0.0",
   "main": "index.ts",
-  "devDependencies": {},
   "scripts": {
+    "start": "nodemon index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "tao",
