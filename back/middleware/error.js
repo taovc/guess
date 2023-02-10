@@ -1,10 +1,5 @@
-class ErrorResponse extends Error {
-    constructor(message, statusCode) {
-      super(message);
-      this.statusCode = statusCode;
-    }
-}
-  
+const ErrorResponse = require("../utils/errorResponse.js");
+
 const errorHandler = (err, res) => {
   let error = { ...err };
 

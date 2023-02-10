@@ -11,9 +11,9 @@ const AuthProvider = (props) => {
   useEffect(() => {
     setToken(localStorage.getItem("token"));
     if (token) {
-      axios.defaults.headers.common["Authorization"] = token;
+      axios.defaults.headers.common["authorization"] = token;
     } else {
-      delete axios.defaults.headers.common["Authorization"];
+      delete axios.defaults.headers.common["authorization"];
       navigate("/login");
     }
   }, [token, navigate]);
