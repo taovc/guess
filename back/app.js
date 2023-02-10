@@ -11,7 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // login and register with JWT (no api)
-//app.use("/api", require("./routes/auth"));
+app.use("/api", require("./routes/auth"));
 
 // api routes -- OAuth2 with Google API, facebook API, etc.
 
