@@ -4,12 +4,15 @@ import useWebSocket, { ReadyState } from "react-use-websocket";
 import { useNavigate } from "react-router-dom";
 import RoomCard from "./Card";
 
+import CreateRoom from "./CreateRoom";
+
 const wsUrl = "ws://localhost:8080/ws";
 
 export const UserWsType = React.createContext();
 
 function Home() {
   const navigate = useNavigate();
+  const [isCreateRoom, setIsCreateRoom] = useState(false);
   const { sendJsonMessage, readyState } = useWebSocket(wsUrl, {
     onOpen: () => {
       console.log("WebSocket connection established.");
@@ -45,11 +48,18 @@ function Home() {
     }
   }, [readyState]);
 
+  const handleCreateRoom = () => {
+    setIsCreateRoom(true);
+  };
+
   return (
     <section>
       <UserWsType.Provider value={sendJsonMessage}>
         <Container fluid className="home-section">
-          <Container>
+          {isCreateRoom && (
+            <CreateRoom setIsCreateRoom={setIsCreateRoom}></CreateRoom>
+          )}
+          <Container hidden={isCreateRoom}>
             <h1 className="home-heading">欢迎来到你画我猜！</h1>
             <Row>
               {Object.keys(rooms).map(
@@ -68,6 +78,14 @@ function Home() {
               )}
             </Row>
           </Container>
+          <Button
+            variant="primary"
+            size="lg"
+            onClick={handleCreateRoom}
+            hidden={isCreateRoom}
+          >
+            创建房间
+          </Button>
         </Container>
       </UserWsType.Provider>
     </section>

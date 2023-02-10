@@ -10,7 +10,6 @@ import AuthProvider from "./components/Auth";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import Login from "./components/Login";
-import CreateHome from "./components/CreateHome";
 import ScrollToTop from "./components/ScrollToTop";
 
 import "./style.css";

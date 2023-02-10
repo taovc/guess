@@ -118,6 +118,17 @@ html {
   align-items: center;
   width: 100vw;
   height: 100vh;
+  filter: brightness(0.5);
+}
+
+.Create-room-form {
+  width: 420px;
+  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
+  padding-top: 30px;
+  padding-bottom: 20px;
+  border-radius: 8px;
+  background-color: rgba(98, 129, 195, 0.06);
+  backdrop-filter: blur(10px);
 }
 
 .Auth-form {
