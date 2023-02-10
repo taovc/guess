@@ -35,6 +35,7 @@ export default function CreateRoom(props) {
               type="name"
               className="form-control mt-1"
               placeholder="name"
+              required={true}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
@@ -44,6 +45,8 @@ export default function CreateRoom(props) {
               type="Max Player"
               className="form-control mt-1"
               placeholder="Enter Max Player"
+              pattern="[0-9]*"
+              required={true}
               onChange={(e) => setMaxPlayer(e.target.value)}
             />
           </div>
