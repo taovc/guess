@@ -40,6 +40,7 @@ exports.login = async (req, res, next) => {
       token: jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
         expiresIn: process.env.JWT_EXPIRE,
       }),
+      user: user.email,
     });
   } catch (err) {
     res.status(500).json({ error: "login faild" });
@@ -47,7 +48,10 @@ exports.login = async (req, res, next) => {
 };
 
 exports.resetPassword = async (req, res, next) => {
-  const decodedToken = jwt.verify(req.params.resetToken, process.env.JWT_SECRET);
+  const decodedToken = jwt.verify(
+    req.params.resetToken,
+    process.env.JWT_SECRET
+  );
   const user = await User.findById(decodedToken.userId);
   if (!user) {
     return new ErrorResponse("Utilisateur non trouvé", 404);

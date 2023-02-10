@@ -20,6 +20,7 @@
     "react-scripts": "5.0.0",
     "react-snowfall": "^1.2.1",
     "react-tsparticles": "^1.42.2",
+    "react-use-websocket": "^4.2.0",
     "typewriter-effect": "^2.18.2",
     "web-vitals": "^2.1.4",
     "workbox-background-sync": "^6.5.4",

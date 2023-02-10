@@ -1,15 +1,14 @@
-import React, { useEffect, createContext } from "react";
+import React, { useEffect } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export const AuthContext = createContext();
-
 const AuthProvider = (props) => {
   const navigate = useNavigate();
+  let token = localStorage.getItem("token");
+  let user = localStorage.getItem("user");
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
+    if (token && user) {
       axios.defaults.headers.common["authorization"] = token;
     } else {
       delete axios.defaults.headers.common["authorization"];
@@ -17,7 +16,7 @@ const AuthProvider = (props) => {
     }
   }, [navigate]);
 
-  return <AuthContext.Provider value={{}}>{props.children}</AuthContext.Provider>;
+  return <div>{props.children}</div>;
 };
 
 export default AuthProvider;

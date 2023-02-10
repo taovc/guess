@@ -2,14 +2,14 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-export default function Login(props) {
+const urlLogin = "http://localhost:8080/api/auth/login";
+const urlRegister = "http://localhost:8080/api/auth/register";
+
+export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [register, setRegister] = useState(false);
   const navigate = useNavigate();
-
-  const urlLogin = "http://localhost:8080/api/auth/login";
-  const urlRegister = "http://localhost:8080/api/auth/register";
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,6 +22,7 @@ export default function Login(props) {
       .then((res) => {
         if (res.data.token) {
           localStorage.setItem("token", JSON.stringify(res.data.token));
+          localStorage.setItem("user", JSON.stringify(res.data.user));
           navigate("/");
         }
       })
@@ -38,7 +39,11 @@ export default function Login(props) {
     <div className="Auth-form-container">
       <form className="Auth-form" onSubmit={handleSubmit}>
         <div className="Auth-form-content">
-          {!register ? <h3 className="Auth-form-title">Sign In</h3> : <h3 className="Auth-form-title">Sign Up</h3>}
+          {!register ? (
+            <h3 className="Auth-form-title">Sign In</h3>
+          ) : (
+            <h3 className="Auth-form-title">Sign Up</h3>
+          )}
           <div className="form-group mt-3">
             <label>Email address</label>
             <input
@@ -63,11 +68,17 @@ export default function Login(props) {
             </button>
           </div>
           {!register ? (
-            <p className="forgot-password text-right mt-2" onClick={handleRegister}>
+            <p
+              className="forgot-password text-right mt-2"
+              onClick={handleRegister}
+            >
               <a href="#register">register</a>
             </p>
           ) : (
-            <p className="forgot-password text-right mt-2" onClick={handleRegister}>
+            <p
+              className="forgot-password text-right mt-2"
+              onClick={handleRegister}
+            >
               <a href="#login">login</a>
             </p>
           )}
