@@ -20,7 +20,7 @@ const clients = {};
 // I'm maintaining all active users in this object
 let users = [];
 
-let rooms = [];
+let rooms = {};
 
 // Event types
 const typesDef = {
