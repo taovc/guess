@@ -1,5 +1,4 @@
-import React, { useState, useEffect} from "react";
-import Preloader from "./components/Pre";
+import React from "react";
 import Navbar from "./components/Navbar";
 import {
   BrowserRouter as Router,
@@ -15,24 +14,11 @@ import ScrollToTop from "./components/ScrollToTop";
 import "./style.css";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Snowfall from "react-snowfall";
 
 function App() {
-  const [load, upadateLoad] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      upadateLoad(false);
-    }, 1200);
-
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
     <Router>
-      <Preloader load={load} />
-      <div className="App" id={load ? "no-scroll" : "scroll"}>
-        <Snowfall snowflakeCount={20} />
+      <div className="App" id={"scroll"}>
         <Navbar />
         <ScrollToTop />
         <Routes>
