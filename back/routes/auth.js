@@ -4,7 +4,7 @@ const authCtrl = require("../controllers/auth");
 
 router.post("/auth/register", authCtrl.register);
 router.post("/auth/login", authCtrl.login);
-//router.post("/auth/forgotpassword", authCtrl.forgotPassword);
 router.put("/auth/passwordreset/:resetToken", authCtrl.resetPassword);
+router.get("/auth/delete/:email", authCtrl.deleteUser);
 
 module.exports = router;

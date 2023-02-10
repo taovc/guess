@@ -4,15 +4,12 @@ const jwt = require("jsonwebtoken");
 const ErrorResponse = require("../utils/errorResponse");
 require("dotenv").config({ path: "./config.env" });
 
-exports.register = async function (req, res) {
+exports.register = async function (req, res, next) {
   const { email, password } = req.body;
   try {
     const user = await User.create({
       email,
-      password,
-    });
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: process.env.JWT_EXPIRES_IN,
+      password: await bcrypt.hash(password, 10),
     });
     res.status(201).json({
       status: "register success",
@@ -41,7 +38,7 @@ exports.login = async (req, res, next) => {
     res.status(200).json({
       message: "Authentification réussie",
       token: jwt.sign({ userId: user._id }, process.env.JWT_SECRET, {
-        expiresIn: "1h",
+        expiresIn: process.env.JWT_EXPIRE,
       }),
     });
   } catch (err) {
@@ -59,4 +56,14 @@ exports.resetPassword = async (req, res, next) => {
   user.password = hash;
   await user.save();
   res.status(200).json({ success: true, data: "Mot de passe mis à jour" });
+};
+
+exports.deleteUser = async (req, res, next) => {
+  console.log(req.params.email);
+  const user = await User.find({ email: req.params.email });
+  if (!user) {
+    return new ErrorResponse("Utilisateur non trouvé", 404);
+  }
+  await User.deleteOne({ email: req.params.email });
+  res.status(200).json({ success: true, data: {} });
 };

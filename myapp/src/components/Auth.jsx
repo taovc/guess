@@ -12,6 +12,7 @@ const AuthProvider = (props) => {
     setToken(localStorage.getItem("token"));
     if (token) {
       axios.defaults.headers.common["authorization"] = token;
+      navigate("/");
     } else {
       delete axios.defaults.headers.common["authorization"];
       navigate("/login");

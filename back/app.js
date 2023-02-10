@@ -13,11 +13,6 @@ app.use(express.urlencoded({ extended: true }));
 // login and register with JWT (no api)
 app.use("/api", require("./routes/auth"));
 
-// api routes -- OAuth2 with Google API, facebook API, etc.
-
-// private account
-//app.use("/api", require("./routes/private"));
-
 app.use(errorHandler);
 
 module.exports = app;
