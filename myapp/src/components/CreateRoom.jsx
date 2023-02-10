@@ -20,6 +20,7 @@ export default function CreateRoom(props) {
         max: maxplayer,
       },
     });
+    navigate("/room/" + name);
     props.setIsCreateRoom(false);
   };
 

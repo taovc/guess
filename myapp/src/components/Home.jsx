@@ -12,7 +12,7 @@ export const UserWsType = React.createContext();
 
 function isRoomEvent(message) {
   let evt = JSON.parse(message.data);
-  return evt.type === "roomevent";
+  return evt.type === "roomevent" || evt.type === "userevent";
 }
 
 function Home() {
@@ -31,24 +31,9 @@ function Home() {
   const user = JSON.parse(localStorage.getItem("user"));
   const { lastJsonMessage } = useWebSocket(wsUrl, {
     share: true,
+    filter: isRoomEvent,
   });
-  console.log(lastJsonMessage);
   const rooms = lastJsonMessage?.data.rooms || {};
-
-  useEffect(() => {}, [rooms, sendJsonMessage, readyState]);
-  /*
-  let rooms = {
-    room1: {
-      name: "room1",
-      player: 1,
-      max: 2,
-    },
-    room2: {
-      name: "room2",
-      player: 2,
-      max: 2,
-    },
-  };*/
 
   useEffect(() => {
     if (window.WebSocket === undefined) {
@@ -57,7 +42,7 @@ function Home() {
       return;
     }
 
-    if (readyState === ReadyState.OPEN) {
+    if (readyState === ReadyState.OPEN && user && rooms) {
       sendJsonMessage({ type: "userevent", user: user });
     }
   }, [readyState]);
@@ -79,20 +64,15 @@ function Home() {
           <Container hidden={isCreateRoom}>
             <h1 className="home-heading">欢迎来到你画我猜！</h1>
             <Row>
-              {Object.keys(rooms).map(
-                (room) => (
-                  console.log(room),
-                  (
-                    <Col md={4} key={room}>
-                      <RoomCard
-                        title={room}
-                        player={rooms[room].player}
-                        max={rooms[room].max}
-                      />
-                    </Col>
-                  )
-                )
-              )}
+              {Object.keys(rooms).map((room) => (
+                <Col md={4} key={room}>
+                  <RoomCard
+                    title={room}
+                    player={rooms[room].player}
+                    max={rooms[room].max}
+                  />
+                </Col>
+              ))}
             </Row>
           </Container>
           <Button

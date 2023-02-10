@@ -44,7 +44,6 @@ function handleMessage(message, connection) {
   const data = JSON.parse(message.toString());
   const json = { type: data.type };
 
-  console.log(data);
   if (data.type === typesDef.USER_EVENT) {
     users[data.user] = data;
     clients[data.user] = connection;
