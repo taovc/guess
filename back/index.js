@@ -54,7 +54,9 @@ function handleMessage(message, connection) {
   broadcastMessage(json);
 }
 
-function handleDisconnect() {}
+function handleDisconnect() {
+  console.log("Client disconnected");
+}
 
 // A new client connection request received
 wsServer.on("connection", function (connection) {
