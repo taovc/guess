@@ -18,7 +18,7 @@ server.listen(port);
 // I'm maintaining all active connections in this object
 const clients = {};
 // I'm maintaining all active users in this object
-const users = {};
+let users = [];
 
 let rooms = [];
 
@@ -39,17 +39,17 @@ function broadcastMessage(json) {
   }
 }
 
-function handleMessage(message) {
-  const dataFromClient = JSON.parse(message.toString());
-  const json = { type: dataFromClient.type };
-  console.log(json);
-  if (dataFromClient.type === typesDef.USER_EVENT) {
-    users[userId] = dataFromClient;
-    userActivity.push(`${dataFromClient.username} joined to edit the document`);
-    json.data = { users, userActivity };
-  } else if (dataFromClient.type === typesDef.CONTENT_CHANGE) {
-    editorContent = dataFromClient.content;
-    json.data = { editorContent, userActivity };
+function handleMessage(message, connection) {
+  const data = JSON.parse(message.toString());
+  const json = { type: data.type };
+
+  if (data.type === typesDef.USER_EVENT) {
+    users.push(data.user);
+    clients[data.user] = connection;
+    json.data = { users };
+  } else if (data.type === typesDef.ROOM_EVENT) {
+    rooms.push(data.room);
+    json.data = { rooms };
   }
   broadcastMessage(json);
 }
@@ -61,7 +61,7 @@ wsServer.on("connection", function (connection) {
   // Generate a unique code for every user
   console.log("Recieved a new connection");
 
-  connection.on("message", (message) => handleMessage(message));
+  connection.on("message", (message) => handleMessage(message, connection));
   // User disconnected
   connection.on("close", () => handleDisconnect());
 });

@@ -17,6 +17,7 @@ function Home() {
     retryOnError: true,
     shouldReconnect: () => true,
   });
+  const user = JSON.parse(localStorage.getItem("user"));
 
   useEffect(() => {
     if (window.WebSocket === undefined) {
@@ -26,7 +27,7 @@ function Home() {
     }
 
     if (readyState === ReadyState.OPEN) {
-      sendJsonMessage({ type: "connection", data: "Hello from client" });
+      sendJsonMessage({ type: "userevent", user: user });
     }
   }, [readyState]);
 
