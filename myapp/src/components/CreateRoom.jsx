@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useWebSocket } from "react-use-websocket";
+
+const wsUrl = "ws://localhost:8080/ws";
 
 export default function CreateRoom(props) {
   const [name, setName] = useState("");
@@ -9,6 +11,15 @@ export default function CreateRoom(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    props.sendJsonMessage({
+      type: "roomevent",
+      action: "create",
+      room: {
+        name: name,
+        player: 0,
+        max: maxplayer,
+      },
+    });
     props.setIsCreateRoom(false);
   };
 

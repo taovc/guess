@@ -10,6 +10,11 @@ const wsUrl = "ws://localhost:8080/ws";
 
 export const UserWsType = React.createContext();
 
+function isRoomEvent(message) {
+  let evt = JSON.parse(message.data);
+  return evt.type === "roomevent";
+}
+
 function Home() {
   const navigate = useNavigate();
   const [isCreateRoom, setIsCreateRoom] = useState(false);
@@ -22,7 +27,16 @@ function Home() {
     retryOnError: true,
     shouldReconnect: () => true,
   });
+
   const user = JSON.parse(localStorage.getItem("user"));
+  const { lastJsonMessage } = useWebSocket(wsUrl, {
+    share: true,
+  });
+  console.log(lastJsonMessage);
+  const rooms = lastJsonMessage?.data.rooms || {};
+
+  useEffect(() => {}, [rooms, sendJsonMessage, readyState]);
+  /*
   let rooms = {
     room1: {
       name: "room1",
@@ -34,7 +48,7 @@ function Home() {
       player: 2,
       max: 2,
     },
-  };
+  };*/
 
   useEffect(() => {
     if (window.WebSocket === undefined) {
@@ -57,7 +71,10 @@ function Home() {
       <UserWsType.Provider value={sendJsonMessage}>
         <Container fluid className="home-section">
           {isCreateRoom && (
-            <CreateRoom setIsCreateRoom={setIsCreateRoom}></CreateRoom>
+            <CreateRoom
+              setIsCreateRoom={setIsCreateRoom}
+              sendJsonMessage={sendJsonMessage}
+            ></CreateRoom>
           )}
           <Container hidden={isCreateRoom}>
             <h1 className="home-heading">欢迎来到你画我猜！</h1>

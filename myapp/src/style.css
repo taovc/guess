@@ -118,7 +118,6 @@ html {
   align-items: center;
   width: 100vw;
   height: 100vh;
-  filter: brightness(0.5);
 }
 
 .Create-room-form {
@@ -129,6 +128,7 @@ html {
   border-radius: 8px;
   background-color: rgba(98, 129, 195, 0.06);
   backdrop-filter: blur(10px);
+  filter: brightness(0.5);
 }
 
 .Auth-form {

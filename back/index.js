@@ -18,7 +18,7 @@ server.listen(port);
 // I'm maintaining all active connections in this object
 const clients = {};
 // I'm maintaining all active users in this object
-let users = [];
+let users = {};
 
 let rooms = {};
 
@@ -32,6 +32,7 @@ function broadcastMessage(json) {
   // We are sending the current data to all connected clients
   const data = JSON.stringify(json);
   for (let userId in clients) {
+    console.log("Sending to client: " + userId);
     let client = clients[userId];
     if (client.readyState === WebSocket.OPEN) {
       client.send(data);
@@ -43,12 +44,15 @@ function handleMessage(message, connection) {
   const data = JSON.parse(message.toString());
   const json = { type: data.type };
 
+  console.log(data);
   if (data.type === typesDef.USER_EVENT) {
-    users.push(data.user);
+    users[data.user] = data;
     clients[data.user] = connection;
-    json.data = { users };
+    json.data = { rooms };
   } else if (data.type === typesDef.ROOM_EVENT) {
-    rooms.push(data.room);
+    if (data.action === "create") {
+      rooms[data.room.name] = { ...data.room };
+    }
     json.data = { rooms };
   }
   broadcastMessage(json);
