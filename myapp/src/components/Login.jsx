@@ -1,24 +1,25 @@
+import React, { useState } from "react";
+import axios from "axios";
 
-import React, {useState} from "react"
-import axios from "axios"
+export default function Login(props) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
-export default function Login (props) {
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        console.log("email", e.target.email.value)
-        const data = {
-            email: email,
-            password: password
-        }
-       axios.post("http://localhost:3000/api/v1/auth/login", data).then((res) => {
-            console.log(res.data)
-        }).catch((err) => {
-            console.log(err)
-        })
-    }
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const data = {
+      email: email,
+      password: password,
+    };
+    axios
+      .post("http://localhost:3000/api/login", data)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
 
   return (
     <div className="Auth-form-container">
@@ -31,6 +32,7 @@ export default function Login (props) {
               type="email"
               className="form-control mt-1"
               placeholder="Enter email"
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="form-group mt-3">
@@ -39,6 +41,7 @@ export default function Login (props) {
               type="password"
               className="form-control mt-1"
               placeholder="Enter password"
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <div className="d-grid gap-2 mt-3">
@@ -46,11 +49,9 @@ export default function Login (props) {
               Submit
             </button>
           </div>
-          <p className="forgot-password text-right mt-2">
-            Forgot <a href="#">password?</a>
-          </p>
+          <p className="forgot-password text-right mt-2">Forgot password?</p>
         </div>
       </form>
     </div>
-  )
+  );
 }
