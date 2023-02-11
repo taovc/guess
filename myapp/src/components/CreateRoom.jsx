@@ -14,12 +14,12 @@ export default function CreateRoom() {
       type: "roomevent",
       action: "create",
       room: {
-        name: values.name,
+        name: values.roomName,
         player: 0,
-        max: values.maxplayer,
+        max: values.maxPlayer,
       },
     });
-    navigate("/room/");
+    navigate("/home" + values.roomName);
     setIsCreateRoom(false);
   };
 

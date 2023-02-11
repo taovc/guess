@@ -1,44 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Button } from "react-bootstrap";
-import useWebSocket from "react-use-websocket";
 import { useNavigate } from "react-router-dom";
 
 import RoomCard from "./Card";
 import CreateRoom from "./CreateRoom";
+import useRoomWebSocket from "./useRoomWebSocket";
 
-const wsUrl = "ws://localhost:8080/ws";
 export const UserWsType = React.createContext();
-
-function isRoomEvent(message) {
-  let evt = JSON.parse(message.data);
-  return evt.type === "roomevent" || evt.type === "userevent";
-}
 
 function Home() {
   const navigate = useNavigate();
   const [isCreateRoom, setIsCreateRoom] = useState(false);
-  const [rooms, setRooms] = useState({});
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const { sendJsonMessage, readyState } = useWebSocket(wsUrl, {
-    onOpen: () => {
-      console.log("WebSocket connection established.");
-      sendJsonMessage({ type: "userevent", user: user });
-    },
-    onMessage: (message) => {
-      if (isRoomEvent(message)) {
-        let evt = JSON.parse(message.data);
-        setRooms(evt?.data.rooms || {});
-      }
-    },
-    onClose: () => {
-      console.log("WebSocket connection closed.");
-    },
-    share: true,
-    filter: () => false,
-    retryOnError: true,
-    shouldReconnect: () => true,
-  });
+  const { sendJsonMessage, readyState, rooms } = useRoomWebSocket(user);
 
   useEffect(() => {
     if (window.WebSocket === undefined) {
