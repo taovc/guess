@@ -26,7 +26,7 @@ function App() {
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<Home />} />
-            <Route path="/draw" element={<DrawingBoard />} />
+            <Route path="/room/:name" element={<DrawingBoard />} />
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>

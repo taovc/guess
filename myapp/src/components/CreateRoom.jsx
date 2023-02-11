@@ -15,11 +15,11 @@ export default function CreateRoom() {
       action: "create",
       room: {
         name: values.roomName,
-        player: 0,
+        player: 1,
         max: values.maxPlayer,
       },
     });
-    navigate("/home" + values.roomName);
+    navigate("/room/" + values.roomName);
     setIsCreateRoom(false);
   };
 

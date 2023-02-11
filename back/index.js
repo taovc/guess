@@ -26,7 +26,6 @@ let rooms = {};
 const typesDef = {
   USER_EVENT: "userevent",
   ROOM_EVENT: "roomevent",
-  
 };
 
 function broadcastMessage(json) {
@@ -45,6 +44,7 @@ function handleMessage(message, connection) {
   const data = JSON.parse(message.toString());
   const json = { type: data.type };
 
+  console.log("Received message from client: ", data);
   if (data.type === typesDef.USER_EVENT) {
     users[data.user] = data;
     clients[data.user] = connection;
@@ -52,6 +52,9 @@ function handleMessage(message, connection) {
   } else if (data.type === typesDef.ROOM_EVENT) {
     if (data.action === "create") {
       rooms[data.room.name] = { ...data.room };
+    }
+    if (data.action === "join") {
+      console.log("Joining room: ", rooms);
     }
     json.data = { rooms };
   }
