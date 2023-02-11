@@ -26,6 +26,7 @@ let rooms = {};
 const typesDef = {
   USER_EVENT: "userevent",
   ROOM_EVENT: "roomevent",
+  
 };
 
 function broadcastMessage(json) {

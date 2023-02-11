@@ -14,7 +14,7 @@ const AuthProvider = (props) => {
       delete axios.defaults.headers.common["authorization"];
       navigate("/login");
     }
-  }, [navigate]);
+  }, [navigate ,token, user]);
 
   return <div>{props.children}</div>;
 };
