@@ -1,0 +1,20 @@
+#the dockerfile for react app
+FROM node:latest
+
+# set the working directory
+WORKDIR /usr/src/app
+
+# copy the package.json file
+COPY package*.json ./
+
+# install dependencies
+RUN npm install --legacy-peer-deps
+
+# copy the rest of the files
+COPY . .
+
+# expose the port
+EXPOSE 3000
+
+# start the server
+CMD [ "npm", "start" ]

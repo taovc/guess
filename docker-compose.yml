@@ -1,0 +1,29 @@
+#the docker-compose.yml file for react app and node app
+version: '3.7'
+services:
+  myapp:
+    build: ./myapp
+    ports:
+      - 3000:3000
+    restart: always
+    volumes:
+      - ./myapp/src:/app/src
+    depends_on:
+      - back
+    networks:
+      - guess
+  back:
+    build: ./back
+    restart: always
+    ports:
+      - 8080:8080
+    volumes:
+      - ./back:/app
+    networks:
+      - guess
+
+networks:
+  guess:
+
+volumes:
+  node_modules:
