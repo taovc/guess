@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
+import Form from "./Form";
+import { Button } from "react-bootstrap";
+
 const urlLogin = "http://localhost:8080/api/auth/login";
 const urlRegister = "http://localhost:8080/api/auth/register";
 
@@ -11,11 +14,11 @@ export default function Login() {
   const [register, setRegister] = useState(false);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e, values) => {
     e.preventDefault();
     const data = {
-      email: email,
-      password: password,
+      email: values.email,
+      password: values.password,
     };
     axios
       .post(register ? urlRegister : urlLogin, data)
@@ -35,55 +38,31 @@ export default function Login() {
     setRegister(!register);
   };
 
+  const formFields = [
+    {
+      type: "email",
+      name: "email",
+      label: "Email address",
+      placeholder: "Enter email",
+      value: email,
+      onChange: (e) => setEmail(e.target.value),
+    },
+    {
+      type: "password",
+      name: "password",
+      label: "Password",
+      placeholder: "Enter password",
+      value: password,
+      onChange: (e) => setPassword(e.target.value),
+    },
+  ];
+
+  const formTitle = !register ? "Sign In" : "Sign Up";
+
   return (
     <div className="Auth-form-container">
-      <form className="Auth-form" onSubmit={handleSubmit}>
-        <div className="Auth-form-content">
-          {!register ? (
-            <h3 className="Auth-form-title">Sign In</h3>
-          ) : (
-            <h3 className="Auth-form-title">Sign Up</h3>
-          )}
-          <div className="form-group mt-3">
-            <label>Email address</label>
-            <input
-              type="email"
-              className="form-control mt-1"
-              placeholder="Enter email"
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-          <div className="form-group mt-3">
-            <label>Password</label>
-            <input
-              type="password"
-              className="form-control mt-1"
-              placeholder="Enter password"
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-          <div className="d-grid gap-2 mt-3">
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
-          </div>
-          {!register ? (
-            <p
-              className="forgot-password text-right mt-2"
-              onClick={handleRegister}
-            >
-              <a href="#register">register</a>
-            </p>
-          ) : (
-            <p
-              className="forgot-password text-right mt-2"
-              onClick={handleRegister}
-            >
-              <a href="#login">login</a>
-            </p>
-          )}
-        </div>
-      </form>
+      <Form fields={formFields} title={formTitle} onSubmit={handleSubmit} />
+      <Button onClick={handleRegister}>{!register ? "Sign Up" : "Sign In"}</Button>
     </div>
   );
 }

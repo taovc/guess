@@ -1,61 +1,43 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { useNavigate } from "react-router-dom";
+
 import { UserWsType } from "./Home";
+import Form from "./Form";
 
 export default function CreateRoom() {
-  const [name, setName] = useState("");
-  const [maxplayer, setMaxPlayer] = useState("");
   const { setIsCreateRoom, sendJsonMessage } = useContext(UserWsType);
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = (e, values) => {
     e.preventDefault();
     sendJsonMessage({
       type: "roomevent",
       action: "create",
       room: {
-        name: name,
+        name: values.name,
         player: 0,
-        max: maxplayer,
+        max: values.maxplayer,
       },
     });
-    navigate("/room/" + name);
+    navigate("/room/");
     setIsCreateRoom(false);
   };
 
+  const fields = [
+    { label: "Room Name", type: "name", placeholder: "name", required: true, name: "roomName" },
+    {
+      label: "Max Player",
+      type: "Max Player",
+      placeholder: "Enter Max Player",
+      required: true,
+      name: "maxPlayer",
+      pattern: "[0-9]*",
+    },
+  ];
+
   return (
     <div className="Auth-form-container">
-      <form className="Create-room-form" onSubmit={handleSubmit}>
-        <div className="Auth-form-content">
-          <h3 className="Auth-form-title">Create Room</h3>
-          <div className="form-group mt-3">
-            <label>Room Name</label>
-            <input
-              type="name"
-              className="form-control mt-1"
-              placeholder="name"
-              required={true}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </div>
-          <div className="form-group mt-3">
-            <label>Max Player</label>
-            <input
-              type="Max Player"
-              className="form-control mt-1"
-              placeholder="Enter Max Player"
-              pattern="[0-9]*"
-              required={true}
-              onChange={(e) => setMaxPlayer(e.target.value)}
-            />
-          </div>
-          <div className="d-grid gap-2 mt-3">
-            <button type="submit" className="btn btn-primary">
-              Submit
-            </button>
-          </div>
-        </div>
-      </form>
+      <Form onSubmit={handleSubmit} fields={fields} title={"Create Room"} />
     </div>
   );
 }
