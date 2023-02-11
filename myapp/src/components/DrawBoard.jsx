@@ -1,8 +1,12 @@
 import React, { useRef, useEffect } from "react";
 import { Button } from "react-bootstrap";
+import useRoomWebSocket from "./useRoomWebSocket";
 
 const DrawBoard = () => {
   const canvasRef = useRef(null);
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  const { sendJsonMessage, readyState } = useRoomWebSocket(user);
 
   let clickX = [];
   let clickY = [];
@@ -54,7 +58,7 @@ const DrawBoard = () => {
   };
 
   const clear = () => {
-    context.clearRect(0, 0, canvasWidth, canvasHeight);
+    create();
   };
 
   const initCanvas = (canvasDivDom) => {
@@ -99,6 +103,13 @@ const DrawBoard = () => {
       paint = false;
     });
   };
+
+  useEffect(() => {
+    if (window.WebSocket === undefined) {
+      console.log("Your browser does not support WebSockets.");
+      return;
+    }
+  }, [readyState, user, sendJsonMessage]);
 
   useEffect(() => {
     initCanvas(canvasRef.current.parentElement);
