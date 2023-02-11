@@ -61,9 +61,7 @@ function Home() {
     <section>
       <UserWsType.Provider value={contextValue}>
         <Container fluid className="home-section">
-          {isCreateRoom && (
-            <CreateRoom setIsCreateRoom={setIsCreateRoom} sendJsonMessage={sendJsonMessage}></CreateRoom>
-          )}
+          {isCreateRoom && <CreateRoom></CreateRoom>}
           <Container hidden={isCreateRoom}>
             <h1 className="home-heading">欢迎来到你画我猜！</h1>
             <Row>
