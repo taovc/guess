@@ -15,7 +15,7 @@ const useRoomWebSocket = (user, mode) => {
     onOpen: () => {
       console.log("WebSocket connection established.");
       if (!mode || mode === "user") sendJsonMessage({ type: "userevent", user: user });
-      if (mode === "room") sendJsonMessage({ type: "roomevent", action: "join", room:  });
+      if (mode === "room") sendJsonMessage({ type: "roomevent", action: "join", room: user });
     },
     onMessage: (message) => {
       console.log("WebSocket message received:", message);
