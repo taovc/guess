@@ -1,17 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useWebSocket } from "react-use-websocket";
+import { UserWsType } from "./Home";
 
-const wsUrl = "ws://localhost:8080/ws";
-
-export default function CreateRoom(props) {
+export default function CreateRoom() {
   const [name, setName] = useState("");
   const [maxplayer, setMaxPlayer] = useState("");
+  const { setIsCreateRoom, sendJsonMessage } = useContext(UserWsType);
   const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    props.sendJsonMessage({
+    sendJsonMessage({
       type: "roomevent",
       action: "create",
       room: {
@@ -21,7 +20,7 @@ export default function CreateRoom(props) {
       },
     });
     navigate("/room/" + name);
-    props.setIsCreateRoom(false);
+    setIsCreateRoom(false);
   };
 
   return (
