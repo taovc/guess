@@ -6,7 +6,7 @@ const DrawBoard = () => {
   const canvasRef = useRef(null);
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const { sendJsonMessage, readyState } = useRoomWebSocket(user);
+  const { sendJsonMessage, readyState } = useRoomWebSocket(user, "room");
 
   let clickX = [];
   let clickY = [];

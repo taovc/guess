@@ -13,7 +13,7 @@ function Home() {
   const [isCreateRoom, setIsCreateRoom] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
 
-  const { sendJsonMessage, readyState, rooms } = useRoomWebSocket(user);
+  const { sendJsonMessage, readyState, rooms } = useRoomWebSocket(user, "user");
 
   useEffect(() => {
     if (window.WebSocket === undefined) {
