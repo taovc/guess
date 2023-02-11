@@ -10,6 +10,7 @@ import AuthProvider from "./components/Auth";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home";
 import Login from "./components/Login";
+import DrawingBoard from "./components/DrawBoard";
 import ScrollToTop from "./components/ScrollToTop";
 
 import "./style.css";
@@ -25,6 +26,7 @@ function App() {
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<Home />} />
+            <Route path="/draw" element={<DrawingBoard />} />
             <Route path="/login" element={<Login />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
