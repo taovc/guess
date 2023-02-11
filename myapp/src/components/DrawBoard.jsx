@@ -3,6 +3,7 @@ import { Button } from "react-bootstrap";
 
 const DrawBoard = () => {
   const canvasRef = useRef(null);
+
   let clickX = [];
   let clickY = [];
   let clickDrag = [];
@@ -52,6 +53,10 @@ const DrawBoard = () => {
     clickDrag = [];
   };
 
+  const clear = () => {
+    context.clearRect(0, 0, canvasWidth, canvasHeight);
+  };
+
   const initCanvas = (canvasDivDom) => {
     canvas = canvasRef.current;
     context = canvas.getContext("2d");
@@ -61,6 +66,11 @@ const DrawBoard = () => {
     canvas.setAttribute("height", canvasHeight);
     create();
     listen();
+  };
+
+  const saveCanvas = () => {
+    const dataURL = canvasRef.current.toDataURL();
+    console.log(dataURL);
   };
 
   const listen = () => {
@@ -82,6 +92,7 @@ const DrawBoard = () => {
 
     canvas.addEventListener("mouseup", function (e) {
       paint = false;
+      saveCanvas();
     });
 
     canvas.addEventListener("mouseleave", function (e) {
@@ -97,7 +108,7 @@ const DrawBoard = () => {
     <div className="Auth-form-container">
       <div className="canvas-container">
         <canvas ref={canvasRef} />
-        <Button variant="primary" onClick={create}>
+        <Button variant="primary" onClick={clear}>
           Clear
         </Button>
       </div>
