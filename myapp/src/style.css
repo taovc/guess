@@ -256,3 +256,28 @@ html {
   transform: translate(-50%, -50%);
   background-color: #f2f2f2;
 }
+
+/* --------- */
+/* msg section */
+/* --------- */
+
+.display-success {
+  display: inline-block;
+  width: 100%;
+  padding: 1px;
+  background-color: green;
+  color: white;
+  text-align: center;
+  margin-bottom: 4px;
+  border-radius: 15px;
+}
+
+.display-error {
+  display: inline-block;
+  width: 300px;
+  height: 30px;
+  background-color: rgb(219, 8, 8);
+  text-align: center;
+  margin-bottom: 4px;
+  border-radius: 15px;
+}
