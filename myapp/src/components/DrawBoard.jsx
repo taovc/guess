@@ -1,12 +1,21 @@
 import React, { useRef, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import useRoomWebSocket from "./useRoomWebSocket";
+import {useLocation} from "react-router-dom";
 
 const DrawBoard = () => {
   const canvasRef = useRef(null);
   const user = JSON.parse(localStorage.getItem("user"));
+  const location = useLocation();
+  const parts = location.pathname.split("/");
+  const room = parts[parts.length - 1];
 
-  const { sendJsonMessage, readyState } = useRoomWebSocket(user, "room");
+  const { sendJsonMessage, readyState } = useRoomWebSocket(user, {
+    type: "roomevent",
+    action: "join",
+    user: user,
+    room: room,
+    });
 
   let clickX = [];
   let clickY = [];

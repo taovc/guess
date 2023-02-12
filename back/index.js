@@ -31,6 +31,7 @@ function broadcastMessage(json) {
     console.log("Sending to client: " + users[userId]);
     let client = clients[userId];
     if (client.readyState === WebSocket.OPEN) {
+      console.log(data)
       client.send(data);
     }
   }
@@ -40,22 +41,6 @@ function handleMessage(message, userId) {
   const data = JSON.parse(message.toString());
   const json = { type: data.type };
 
-  console.log("Received message from client: ", data);
-  /*
-  if (data.type === typesDef.USER_EVENT) {
-    users[data.user] = data;
-    clients[data.user] = connection;
-    json.data = { rooms };
-  } else if (data.type === typesDef.ROOM_EVENT) {
-    if (data.action === "create") {
-      rooms[data.room.name] = { ...data.room };
-    }
-    if (data.action === "join") {
-      console.log("Joining room: ", rooms);
-    }
-    json.data = { rooms };
-  }
-  */
   switch (data.type) {
     case typesDef.USER_EVENT:
       if (data.action === "connect") {
@@ -73,6 +58,22 @@ function handleMessage(message, userId) {
       }
       if (data.action === "join") {
         console.log("Joining room: ", rooms);
+        // player ++
+        if (data?.room && rooms[data?.room]) rooms[data.room].player++;
+        if (rooms[data?.room]?.player.toString() === rooms[data?.room]?.max) {
+          delete rooms[data.room];
+          console.log("Game started: ", rooms);
+        }
+        json.data = { rooms};
+      }
+      if (data.action === "leave") {
+        console.log("Leaving room: ", rooms);
+      }
+      if (data.action === "begin") {
+        console.log("Begin room: ", rooms);
+      }
+      if (data.action === "end") {
+        console.log("End room: ", rooms);
       }
       break;
     default:

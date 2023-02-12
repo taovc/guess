@@ -15,7 +15,7 @@ export default function CreateRoom() {
       action: "create",
       room: {
         name: values.roomName,
-        player: 1,
+        player: 0,
         max: values.maxPlayer,
       },
     });

@@ -24,7 +24,11 @@ function RoomCard(props) {
           max player:
           {props.max}
         </Card.Text>
-        <Button variant="primary" href={props.Link} target="_blank">
+        <Button
+          variant="primary"
+          href={"http://localhost:3000/room/" + props.title}
+          target="_blank"
+        >
           Join
         </Button>
       </Card.Body>
