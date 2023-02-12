@@ -71,3 +71,7 @@ exports.deleteUser = async (req, res, next) => {
   await User.deleteOne({ email: req.params.email });
   res.status(200).json({ success: true, data: {} });
 };
+
+exports.rooms = async (req, res, next) => {
+  res.status(200).json({ success: true, data: "rooms" });
+}

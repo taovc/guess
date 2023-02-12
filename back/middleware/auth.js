@@ -1,25 +1,26 @@
 const jwt = require("jsonwebtoken");
-const ErrorResponse = require("../utils/errorResponse.js");
 const User = require("../models/user");
 
-exports.protect = async (req, res, next) => {
+exports.protect = async function(req, res, next) {
   let token;
 
-  if (req.headers.authorization && req.headers.authorization.startsWith("Bearer")) {
-    token = req.headers.authorization.split(" ")[1];
+  if (req.headers.authorization) {
+    token = req.headers.authorization.replace(/^"|"$/g, '');
   }
   if (!token) {
-    return next(new ErrorResponse("Not authorized to access this route", 401));
+    res.status(401).json({ error: "Not authorized to access this router" });
+    return;
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const user = await User.findById(decoded.userId);
     if (!user) {
-      return next(new ErrorResponse("No user found with this id", 404));
+      res.status(401).json({ error: "Not authorized to access this router" });
     }
     req.user = user;
     next();
   } catch (err) {
-    return next(new ErrorResponse("Not authorized to access this router", 401));
+    console.log(err);
+    res.status(401).json({ error: "Not authorized to access this router" });
   }
 };

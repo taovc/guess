@@ -9,12 +9,27 @@ const AuthProvider = (props) => {
 
   useEffect(() => {
     if (token && user) {
+      axios
+        .post("http://localhost:8080/api/auth/verify",
+        {
+        } , {
+          headers: {
+            authorization: token,
+          },
+        })
+        .then()
+        .catch((err) => {
+          localStorage.removeItem("token");
+          localStorage.removeItem("user");
+          navigate("/login");
+        });
+
       axios.defaults.headers.common["authorization"] = token;
     } else {
       delete axios.defaults.headers.common["authorization"];
       navigate("/login");
     }
-  }, [navigate ,token, user]);
+  }, [navigate, token, user]);
 
   return <div>{props.children}</div>;
 };
