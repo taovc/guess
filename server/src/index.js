@@ -31,7 +31,7 @@ function broadcastMessage(json) {
     console.log("Sending to client: " + users[userId]);
     let client = clients[userId];
     if (client.readyState === WebSocket.OPEN) {
-      console.log(data)
+      console.log(data);
       client.send(data);
     }
   }
@@ -40,11 +40,11 @@ function broadcastMessage(json) {
 function handleMessage(message, userId) {
   const data = JSON.parse(message.toString());
   const json = { type: data.type };
+  users[userId] = data.user;
 
   switch (data.type) {
     case typesDef.USER_EVENT:
       if (data.action === "connect") {
-        users[userId] = data.user;
         json.data = { rooms };
       } else if (data.action === "disconnect") {
         delete users[data.user];
@@ -58,13 +58,18 @@ function handleMessage(message, userId) {
       }
       if (data.action === "join") {
         console.log("Joining room: ", rooms);
-        // player ++
+        // if room does not exist, send error
+        if (!rooms[data?.room]) {
+          json.data = { type: "error", error: "Room does not exist" };
+          clients[userId].send(JSON.stringify(json));
+          break;
+        }
         if (data?.room && rooms[data?.room]) rooms[data.room].player++;
         if (rooms[data?.room]?.player.toString() === rooms[data?.room]?.max) {
           delete rooms[data.room];
           console.log("Game started: ", rooms);
         }
-        json.data = { rooms};
+        json.data = { rooms };
       }
       if (data.action === "leave") {
         console.log("Leaving room: ", rooms);
@@ -96,6 +101,7 @@ wsServer.on("connection", function (connection) {
   // Generate a unique code for every user
   console.log("Recieved a new connection");
   clients[userId] = connection;
+  users[userId] = "Anonymous";
 
   connection.on("message", (message) => handleMessage(message, userId));
   // User disconnected

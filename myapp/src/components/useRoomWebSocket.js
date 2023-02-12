@@ -13,6 +13,11 @@ function isUserEvent(message) {
   return evt.type === "userevent";
 }
 
+function isErrorMessage(message) {
+  let evt = JSON.parse(message.data);
+  return evt?.data?.type === "error";
+}
+
 const useRoomWebSocket = (user, info) => {
   const [rooms, setRooms] = useState({});
 
@@ -30,6 +35,10 @@ const useRoomWebSocket = (user, info) => {
       if (isRoomEvent(message)) {
         let evt = JSON.parse(message.data);
         setRooms(evt?.data?.rooms || {});
+      }
+      if (isErrorMessage(message)) {
+        let evt = JSON.parse(message.data);
+        window.location.href = "/home";
       }
     },
     onClose: () => {
