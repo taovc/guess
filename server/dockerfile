@@ -2,17 +2,24 @@
 FROM node:latest
 
 # set the working directory
-WORKDIR /usr/src/app
+WORKDIR /usr/src/app/
 
 # copy the package.json file
-COPY package*.json ./
+COPY ./src/package*.json ./
 
 # install dependencies
 RUN npm install
 
+RUN npm install -g nodemon
+
+RUN npm install -g ts-node
+
+RUN mv node_modules ../
+
 # copy the rest of the files
 COPY . .
 
+WORKDIR /usr/src/app/src/
 # expose the port
 EXPOSE 8080
 

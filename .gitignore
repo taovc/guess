@@ -1,4 +1,4 @@
 # ignore all file usless for the project
 
-back/node_modules
+node_modules
 myapp/node_modules

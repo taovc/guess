@@ -13,12 +13,12 @@ services:
     networks:
       - guess
   back:
-    build: ./back
+    build: ./server
     restart: always
     ports:
       - 8080:8080
     volumes:
-      - ./back:/usr/src/app
+      - ./server/src:/usr/src/app/src
     networks:
       - guess
 
