@@ -1,7 +1,8 @@
 const http = require("http");
 const { WebSocket, WebSocketServer } = require("ws");
 const app = require("./app");
-const {clients, users, rooms} = require("./gameData");
+const { clients, users, rooms } = require("./gameData");
+const uuidv4 = require("uuid").v4;
 
 // Event types
 const typesDef = {
@@ -27,7 +28,7 @@ function broadcastMessage(json) {
   // We are sending the current data to all connected clients
   const data = JSON.stringify(json);
   for (let userId in clients) {
-    console.log("Sending to client: " + userId);
+    console.log("Sending to client: " + users[userId]);
     let client = clients[userId];
     if (client.readyState === WebSocket.OPEN) {
       client.send(data);
@@ -35,11 +36,12 @@ function broadcastMessage(json) {
   }
 }
 
-function handleMessage(message, connection) {
+function handleMessage(message, userId) {
   const data = JSON.parse(message.toString());
   const json = { type: data.type };
 
   console.log("Received message from client: ", data);
+  /*
   if (data.type === typesDef.USER_EVENT) {
     users[data.user] = data;
     clients[data.user] = connection;
@@ -53,19 +55,48 @@ function handleMessage(message, connection) {
     }
     json.data = { rooms };
   }
+  */
+  switch (data.type) {
+    case typesDef.USER_EVENT:
+      if (data.action === "connect") {
+        users[userId] = data.user;
+        json.data = { rooms };
+      } else if (data.action === "disconnect") {
+        delete users[data.user];
+        delete clients[data.user];
+      }
+      break;
+    case typesDef.ROOM_EVENT:
+      if (data.action === "create") {
+        rooms[data.room.name] = { ...data.room };
+        json.data = { rooms };
+      }
+      if (data.action === "join") {
+        console.log("Joining room: ", rooms);
+      }
+      break;
+    default:
+      break;
+  }
   broadcastMessage(json);
 }
 
-function handleDisconnect() {
-  console.log("Client disconnected");
+function handleDisconnect(userId) {
+  console.log("Received message from client: close ", users[userId]);
+  delete users[userId];
+  delete clients[userId];
+  const user = users[userId];
+  broadcastMessage({ type: typesDef.USER_EVENT, action: "disconnect", user });
 }
 
 // A new client connection request received
 wsServer.on("connection", function (connection) {
+  const userId = uuidv4();
   // Generate a unique code for every user
   console.log("Recieved a new connection");
+  clients[userId] = connection;
 
-  connection.on("message", (message) => handleMessage(message, connection));
+  connection.on("message", (message) => handleMessage(message, userId));
   // User disconnected
-  connection.on("close", () => handleDisconnect());
+  connection.on("close", () => handleDisconnect(userId));
 });

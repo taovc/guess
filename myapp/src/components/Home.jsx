@@ -12,8 +12,13 @@ function Home() {
   const navigate = useNavigate();
   const [isCreateRoom, setIsCreateRoom] = useState(false);
   const user = JSON.parse(localStorage.getItem("user"));
+  const connectConfig = {
+    type: "userevent",
+    action: "connect",
+    user: user,
+  };
 
-  const { sendJsonMessage, readyState, rooms } = useRoomWebSocket(user, "user");
+  const { sendJsonMessage, readyState, rooms } = useRoomWebSocket(user, connectConfig);
 
   useEffect(() => {
     if (window.WebSocket === undefined) {
@@ -42,12 +47,21 @@ function Home() {
             <Row>
               {Object.keys(rooms).map((room) => (
                 <Col md={4} key={room}>
-                  <RoomCard title={room} player={rooms[room].player} max={rooms[room].max} />
+                  <RoomCard
+                    title={room}
+                    player={rooms[room].player}
+                    max={rooms[room].max}
+                  />
                 </Col>
               ))}
             </Row>
           </Container>
-          <Button variant="primary" size="lg" onClick={handleCreateRoom} hidden={isCreateRoom}>
+          <Button
+            variant="primary"
+            size="lg"
+            onClick={handleCreateRoom}
+            hidden={isCreateRoom}
+          >
             创建房间
           </Button>
         </Container>

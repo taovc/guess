@@ -8,16 +8,16 @@ function isRoomEvent(message) {
   return evt.type === "roomevent" || evt.type === "userevent";
 }
 
-const useRoomWebSocket = (user, mode) => {
+const useRoomWebSocket = (user, info) => {
   const [rooms, setRooms] = useState({});
 
   const { sendJsonMessage, readyState } = useWebSocket(wsUrl, {
     onOpen: () => {
       console.log("WebSocket connection established.");
-      if (!mode || mode === "user") sendJsonMessage({ type: "userevent", user: user });
-      if (mode === "room") sendJsonMessage({ type: "roomevent", action: "join", room: user });
+      sendJsonMessage(info);
     },
     onMessage: (message) => {
+      console.log("WebSocket message received: ", message);
       if (isRoomEvent(message)) {
         let evt = JSON.parse(message.data);
         setRooms(evt?.data.rooms || {});
@@ -25,6 +25,7 @@ const useRoomWebSocket = (user, mode) => {
     },
     onClose: () => {
       console.log("WebSocket connection closed.");
+      sendJsonMessage({ type: "userevent", action: "leave", user });
     },
     share: true,
     filter: () => false,
