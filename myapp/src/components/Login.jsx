@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "react-bootstrap";
 
 import Form from "./Form";
-import { DisplayError } from "./DisplayNotice";
+import { DisplayError, DisplaySuccess } from "./DisplayNotice";
 
 const urlLogin = "http://localhost:8080/api/auth/login";
 const urlRegister = "http://localhost:8080/api/auth/register";
@@ -14,7 +14,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [register, setRegister] = useState(false);
   const [callbackmsg, setCallbackmsg] = useState("");
-  const [isOk, setisOk] = useState(true);
+  const [isOk, setisOk] = useState(null);
   const navigate = useNavigate();
 
   const handleSubmit = (e, values) => {
@@ -29,15 +29,19 @@ export default function Login() {
         if (res.data.token) {
           localStorage.setItem("token", JSON.stringify(res.data.token));
           localStorage.setItem("user", JSON.stringify(res.data.user));
-          setisOk(true);
           navigate("/");
+        }
+        if (register) {
+          setisOk(true);
+          setCallbackmsg("Registration successful");
+          setRegister(false);
         }
       })
       .catch((err) => {
         setCallbackmsg(err?.response?.data?.error);
         setisOk(false);
         setTimeout(() => {
-          setisOk(true);
+          setisOk(null);
         }, 3000);
       });
   };
@@ -69,7 +73,8 @@ export default function Login() {
 
   return (
     <div className="Auth-form-container">
-      {!isOk && <DisplayError message={callbackmsg} />}
+      {isOk === false && <DisplayError message={callbackmsg} />}
+      {isOk === true && <DisplaySuccess message={callbackmsg} />}
       <Form fields={formFields} title={formTitle} onSubmit={handleSubmit} />
       <Button className="Auth-form-container-button" onClick={handleRegister}>
         {!register ? "Sign Up" : "Sign In"}

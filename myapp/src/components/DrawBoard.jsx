@@ -83,7 +83,6 @@ const DrawBoard = () => {
 
   const saveCanvas = () => {
     const dataURL = canvasRef.current.toDataURL();
-    console.log(dataURL);
   };
 
   const listen = () => {

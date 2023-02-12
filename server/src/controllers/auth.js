@@ -17,7 +17,7 @@ exports.register = async function (req, res, next) {
       status: "register success",
     });
   } catch (err) {
-    res.status(500).json({ error: "register faild" });
+    res.status(500).json({ error: "register faild, user already exist" });
   }
 };
 
