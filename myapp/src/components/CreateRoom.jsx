@@ -36,7 +36,7 @@ export default function CreateRoom() {
   ];
 
   return (
-    <div className="Auth-form-container">
+    <div className="Create-room-form">
       <Form onSubmit={handleSubmit} fields={fields} title={"Create Room"} />
     </div>
   );

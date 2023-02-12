@@ -8,6 +8,7 @@ import { AiOutlineHome, AiOutlineUser } from "react-icons/ai";
 
 const Logout = () => {
   localStorage.removeItem("token");
+  localStorage.removeItem("user");
   window.location.href = "/";
 };
 
@@ -23,7 +24,7 @@ function NavBar() {
           </Nav.Item>
 
           <Nav.Item>
-            <Nav.Link as={Link} to="/" onClick={Logout}>
+            <Nav.Link onClick={Logout}>
               <AiOutlineUser style={{ marginBottom: "2px" }} /> Log Out
             </Nav.Link>
           </Nav.Item>

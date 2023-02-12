@@ -62,7 +62,7 @@ export default function Login() {
   return (
     <div className="Auth-form-container">
       <Form fields={formFields} title={formTitle} onSubmit={handleSubmit} />
-      <Button onClick={handleRegister}>{!register ? "Sign Up" : "Sign In"}</Button>
+      <Button className="Auth-form-container-button" onClick={handleRegister}>{!register ? "Sign Up" : "Sign In"}</Button>
     </div>
   );
 }

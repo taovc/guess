@@ -112,20 +112,31 @@ html {
 .Auth-form-container {
   display: flex;
   justify-content: center;
+  flex-direction: column;
   align-items: center;
   width: 100vw;
   height: 100vh;
+  align-items: center;
+}
+
+.Auth-form-container-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .Create-room-form {
-  width: 420px;
-  box-shadow: rgb(0 0 0 / 16%) 1px 1px 10px;
-  padding-top: 30px;
-  padding-bottom: 20px;
-  border-radius: 8px;
-  background-color: rgba(98, 129, 195, 0.06);
-  backdrop-filter: blur(10px);
-  filter: brightness(0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  filter: brightness(0.4);
 }
 
 .Auth-form {
@@ -136,6 +147,7 @@ html {
   border-radius: 8px;
   background-color: white;
 }
+
 
 .Auth-form-content {
   padding-left: 12%;
