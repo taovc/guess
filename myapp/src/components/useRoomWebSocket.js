@@ -5,7 +5,12 @@ const wsUrl = "ws://localhost:8080/ws";
 
 function isRoomEvent(message) {
   let evt = JSON.parse(message.data);
-  return evt.type === "roomevent" || evt.type === "userevent";
+  return evt.type === "roomevent";
+}
+
+function isUserEvent(message) {
+  let evt = JSON.parse(message.data);
+  return evt.type === "userevent";
 }
 
 const useRoomWebSocket = (user, info) => {
@@ -18,9 +23,13 @@ const useRoomWebSocket = (user, info) => {
     },
     onMessage: (message) => {
       console.log("WebSocket message received: ", message);
+      if (isUserEvent(message)) {
+        let evt = JSON.parse(message.data);
+        setRooms(evt?.data?.rooms || {});
+      }
       if (isRoomEvent(message)) {
         let evt = JSON.parse(message.data);
-        setRooms(evt?.data.rooms || {});
+        setRooms(evt?.data?.rooms || {});
       }
     },
     onClose: () => {
