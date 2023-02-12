@@ -2,6 +2,8 @@ var bcrypt = require("bcryptjs");
 const User = require("../models/user");
 const jwt = require("jsonwebtoken");
 const ErrorResponse = require("../utils/errorResponse");
+const gameData = require("../gameData").rooms;
+
 require("dotenv").config({ path: "./config.env" });
 
 exports.register = async function (req, res, next) {
@@ -73,5 +75,5 @@ exports.deleteUser = async (req, res, next) => {
 };
 
 exports.rooms = async (req, res, next) => {
-  res.status(200).json({ success: true, data: "rooms" });
-}
+  res.status(200).json({ success: true, data: { gameData } });
+};

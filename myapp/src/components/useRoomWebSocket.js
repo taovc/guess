@@ -18,7 +18,6 @@ const useRoomWebSocket = (user, mode) => {
       if (mode === "room") sendJsonMessage({ type: "roomevent", action: "join", room: user });
     },
     onMessage: (message) => {
-      console.log("WebSocket message received:", message);
       if (isRoomEvent(message)) {
         let evt = JSON.parse(message.data);
         setRooms(evt?.data.rooms || {});

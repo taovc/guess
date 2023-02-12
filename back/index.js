@@ -1,10 +1,18 @@
 const http = require("http");
 const { WebSocket, WebSocketServer } = require("ws");
 const app = require("./app");
+const {clients, users, rooms} = require("./gameData");
+
+// Event types
+const typesDef = {
+  USER_EVENT: "userevent",
+  ROOM_EVENT: "roomevent",
+};
 
 const port = process.env.PORT || "8081";
-app.set("port", port);
 
+// express app
+app.set("port", port);
 const server = http.createServer(app);
 const wsServer = new WebSocketServer({ server });
 server.on("listening", () => {
@@ -14,19 +22,6 @@ server.on("listening", () => {
 });
 
 server.listen(port);
-
-// I'm maintaining all active connections in this object
-const clients = {};
-// I'm maintaining all active users in this object
-let users = {};
-
-let rooms = {};
-
-// Event types
-const typesDef = {
-  USER_EVENT: "userevent",
-  ROOM_EVENT: "roomevent",
-};
 
 function broadcastMessage(json) {
   // We are sending the current data to all connected clients

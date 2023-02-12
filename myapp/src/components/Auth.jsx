@@ -10,14 +10,16 @@ const AuthProvider = (props) => {
   useEffect(() => {
     if (token && user) {
       axios
-        .post("http://localhost:8080/api/auth/verify",
-        {
-        } , {
-          headers: {
-            authorization: token,
-          },
-        })
-        .then()
+        .post(
+          "http://localhost:8080/api/auth/verify",
+          {},
+          {
+            headers: {
+              authorization: token,
+            },
+          }
+        )
+        .then((res) => {})
         .catch((err) => {
           localStorage.removeItem("token");
           localStorage.removeItem("user");
